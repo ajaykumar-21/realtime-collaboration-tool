@@ -21,8 +21,8 @@ body {
 }
 
 .heading {
-  color: gray;
-  text-shadow: 2px 2px 4px #ebe8e8;
+  color: rgb(66, 198, 238);
+  text-shadow: 2px 2px 2px #ebe8e8;
 }
 
 input {
