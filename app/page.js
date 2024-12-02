@@ -4,7 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import "./globals.css";
 
-export const socket = io(process.env.NEXT_PUBLIC_SOCKET_SERVER_URL);
+export const socket = io(
+  process.env.NEXT_PUBLIC_SOCKET_SERVER_URL || "http://localhost:3001"
+);
+
+console.log("Socket Server URL:", process.env.NEXT_PUBLIC_SOCKET_SERVER_URL);
 
 export default function Home() {
   const canvasRef = useRef(null);

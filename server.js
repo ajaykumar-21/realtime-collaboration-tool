@@ -7,7 +7,11 @@ const app = express();
 const server = http.createServer(app); // Create HTTP server with Express
 const io = new Server(server, {
   cors: {
-    origin: "*",
+    origin: [
+      "http://localhost:3000", // Your development frontend
+      "https://realtime-collaboration-tool.vercel.app/", // Your Vercel production frontend
+    ],
+    methods: ["GET", "POST"], // HTTP methods allowed
   },
 });
 
