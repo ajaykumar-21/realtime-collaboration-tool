@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import "./globals.css";
 
-export const socket = io("https://realtime-collaboration-tool-1.onrender.com/");
+export const socket = io(process.env.NEXT_PUBLIC_SOCKET_SERVER_URL);
 
 export default function Home() {
   const canvasRef = useRef(null);
