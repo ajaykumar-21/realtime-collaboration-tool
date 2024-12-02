@@ -1,9 +1,10 @@
-const express = require("express");
-const http = require("http");
-const { Server } = require("socket.io");
+const express = require("express"); // Express for handling HTTP server
+const http = require("http"); // HTTP module to create server instance
+const { Server } = require("socket.io"); // Socket.IO for real-time WebSocket communication
 
+// Initialize Express application
 const app = express();
-const server = http.createServer(app);
+const server = http.createServer(app); // Create HTTP server with Express
 const io = new Server(server, {
   cors: {
     origin: "*",
@@ -12,6 +13,10 @@ const io = new Server(server, {
 
 io.on("connection", (socket) => {
   console.log("A user connected", socket.id);
+
+  socket.on("drawing", (data) => {
+    socket.broadcast.emit("drawing", data);
+  });
 
   socket.on("disconnect", () => {
     console.log("User disconnected", socket.id);
