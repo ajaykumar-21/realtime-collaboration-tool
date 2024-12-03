@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Real-Time Collaboration Tool 
+This project is a Real-Time Collaboration Tool that allows multiple users to draw collaboratively on a shared canvas in real-time. It leverages Next.js for the frontend, Socket.IO for real-time communication, and supports deployment on platforms like Vercel (frontend) and Render (backend).
 
-## Getting Started
+**/ Features /**
+- Real-Time Drawing
+    Users can draw collaboratively, and changes are reflected in real-time for all participants.
 
-First, run the development server:
+- Customizable Colors
+    Users can select their preferred color for drawing using a color picker.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Cursor Tracking
+    Displays real-time cursor positions of connected users on the canvas.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**/ Tech Stack /**
+# Frontend
+- Next.js (React framework)
+- Tailwind CSS (Responsive UI design)
+- Socket.IO-Client (Real-time communication)
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+# Backend
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Node.js with Express.js
+- Socket.IO (WebSocket server for real-time events)
+- Deployed on Render
 
-## Learn More
+### Setup and Installation
+# Prerequisites
 
-To learn more about Next.js, take a look at the following resources:
+- Node.js installed on your machine
+- npm or yarn
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Steps to Run Locally
+#  Clone the Repository
+- git clone https://github.com/ajaykumar-21/realtime-collaboration-tool.git
+- cd realtime-collaboration-tool
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+#  Install Frontend Dependencies
+- cd frontend
+- npm install
 
-## Deploy on Vercel
+# Start the Backend Server
+- cd backend
+- npm start
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Start the Frontend Server
+- npm run dev
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Usage
+
+- Open the deployed frontend URL in multiple browsers or devices.
+- Start drawing on the canvas.
+- Changes will reflect in real-time for all connected users.
+- Use the color picker to change the drawing color.
