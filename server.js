@@ -1,23 +1,10 @@
 const express = require("express"); // Express for handling HTTP server
 const http = require("http"); // HTTP module to create server instance
 const { Server } = require("socket.io"); // Socket.IO for real-time WebSocket communication
-const cors = require("cors");
 
 // Initialize Express application
 const app = express();
 const server = http.createServer(app); // Create HTTP server with Express
-
-// Apply CORS middleware
-app.use(
-  cors({
-    origin: [
-      "http://localhost:3000", // Development frontend
-      "https://realtime-collaboration-tool.vercel.app", // Production frontend
-    ],
-    methods: ["GET", "POST"],
-    credentials: true,
-  })
-);
 
 const io = new Server(server, {
   cors: {
