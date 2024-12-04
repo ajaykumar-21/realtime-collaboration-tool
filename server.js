@@ -7,7 +7,7 @@ const app = express();
 const server = http.createServer(app);
 const cors = require("cors");
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3001; // Use Render's PORT or default to 3001 locally
 
 const allowedOrigins = [
   "http://localhost:3000", // Development frontend
