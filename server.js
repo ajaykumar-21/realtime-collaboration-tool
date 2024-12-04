@@ -9,22 +9,25 @@ const cors = require("cors");
 
 const PORT = process.env.PORT || 3001; // Use Render's PORT or default to 3001 locally
 
-const allowedOrigins = [
-  "http://localhost:3000", // Development frontend
-  "https://realtime-collaboration-tool.vercel.app", // Production frontend
-];
-
+// Apply CORS middleware
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: [
+      "http://localhost:3000", // Development frontend
+      "https://realtime-collaboration-tool.vercel.app", // Production frontend
+    ],
     methods: ["GET", "POST"],
-    credentials: true,
+    credentials: true, // Allow credentials (cookies, etc.)
   })
 );
 
+// For Socket.IO
 const io = new Server(server, {
   cors: {
-    origin: allowedOrigins,
+    origin: [
+      "http://localhost:3000", // Development frontend
+      "https://realtime-collaboration-tool.vercel.app", // Production frontend
+    ],
     methods: ["GET", "POST"],
   },
 });
