@@ -5,9 +5,9 @@ const { Server } = require("socket.io");
 
 const app = express();
 const server = http.createServer(app);
-const cors = require("cors");
 
 const PORT = process.env.PORT || 3001; // Use Render's PORT or default to 3001 locally
+const cors = require("cors");
 
 // Apply CORS middleware
 app.use(
