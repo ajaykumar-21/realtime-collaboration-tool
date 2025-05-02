@@ -32,10 +32,13 @@ const io = new Server(server, {
   },
 });
 
+app.use("*", (req, res) => {
+  res.status(200).send("Fallback route working.");
+});
+
 app.get("/", (req, res) => {
   res.status(200).send("Server is running!");
 });
-
 
 io.on("connection", (socket) => {
   console.log("A user connected:", socket.id);
