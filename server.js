@@ -29,6 +29,7 @@ const io = new Server(server, {
       "https://realtime-collaboration-tool.vercel.app", // Production frontend
     ],
     methods: ["GET", "POST"],
+    credentials: true,
   },
 });
 
