@@ -4,46 +4,44 @@ import { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import "./globals.css";
 
-const socketServerUrl =
-  process.env.NEXT_PUBLIC_SOCKET_SERVER_URL || "http://localhost:3001";
-
-console.log("Socket Server URL:", socketServerUrl);
-
-const socket = io(socketServerUrl);
+// ✅ Ensure this uses the correct backend URL
+const socket = io(process.env.NEXT_PUBLIC_SOCKET_SERVER_URL, {
+  transports: ["websocket"], // Avoid long polling issues
+});
 
 export default function Home() {
   const canvasRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
-  const [color, setColor] = useState("#000000"); // Default color
+  const [color, setColor] = useState("#000000");
   const [cursorPositions, setCursorPositions] = useState({});
 
   useEffect(() => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
-
-    // Set initial canvas properties
     context.lineWidth = 2;
     context.lineCap = "round";
 
-    // Handle incoming drawing events
-    socket.on("drawing", (data) => {
-      const { x, y, type, color } = data; // Receive color from other clients
+    // Log the server URL being used
+    console.log(
+      "Socket Server URL:",
+      process.env.NEXT_PUBLIC_SOCKET_SERVER_URL
+    );
+
+    socket.on("drawing", ({ x, y, type, color }) => {
       if (type === "begin") {
         context.beginPath();
         context.moveTo(x, y);
       } else if (type === "draw") {
         context.lineTo(x, y);
-        context.strokeStyle = color; // Apply the color to the stroke
+        context.strokeStyle = color;
         context.stroke();
       }
     });
 
-    // Handle cursor position updates
     socket.on("cursor", (data) => {
       setCursorPositions((prev) => ({ ...prev, [data.id]: data }));
     });
 
-    // Remove cursor when a user disconnects
     socket.on("removeCursor", (id) => {
       setCursorPositions((prev) => {
         const newPositions = { ...prev };
@@ -60,55 +58,35 @@ export default function Home() {
   }, []);
 
   const startDrawing = ({ nativeEvent }) => {
-    // console.log(nativeEvent);
     const { offsetX, offsetY } = nativeEvent;
-
-    // Begin drawing on the local canvas
-    const canvas = canvasRef.current;
-    const context = canvas.getContext("2d");
+    const context = canvasRef.current.getContext("2d");
     context.beginPath();
     context.moveTo(offsetX, offsetY);
-
-    // Emit the drawing data to the server
     socket.emit("drawing", { x: offsetX, y: offsetY, type: "begin", color });
-
     setIsDrawing(true);
   };
 
-  // Draw on mouse move
   const draw = ({ nativeEvent }) => {
     if (!isDrawing) return;
     const { offsetX, offsetY } = nativeEvent;
-
-    // Draw locally on the canvas
-    const canvas = canvasRef.current;
-    const context = canvas.getContext("2d");
+    const context = canvasRef.current.getContext("2d");
     context.lineTo(offsetX, offsetY);
-    context.strokeStyle = color; // Use the selected color
+    context.strokeStyle = color;
     context.stroke();
-
-    // Emit the drawing data to the server
     socket.emit("drawing", { x: offsetX, y: offsetY, type: "draw", color });
   };
 
-  // Stop drawing on mouse up or out
-  const stopDrawing = () => {
-    setIsDrawing(false);
-  };
+  const stopDrawing = () => setIsDrawing(false);
 
-  // Update cursor position and color
   const updateCursor = ({ nativeEvent }) => {
     const { offsetX, offsetY } = nativeEvent;
-    socket.emit("cursor", { x: offsetX, y: offsetY, id: socket.id, color }); // Emit cursor position and color
+    socket.emit("cursor", { x: offsetX, y: offsetY, id: socket.id, color });
   };
 
   return (
-    <div className="bg-gray-800 flex justify-center items-center w-full h-screen">
-      <div className="">
-        <h1
-          className="text-center text-[40px] text-blue-400 heading"
-          // style={{ textShadow: "2px 2px 4px #000000", color: "white" }}
-        >
+    <div className="bg-gray-800 flex justify-center items-center w-full h-screen relative">
+      <div>
+        <h1 className="text-center text-[40px] text-blue-400 heading">
           Real-Time Collaboration Tool
         </h1>
 
@@ -119,7 +97,7 @@ export default function Home() {
           onChange={(e) => setColor(e.target.value)}
         />
 
-        {/* Drawing Canvas */}
+        {/* Canvas */}
         <canvas
           ref={canvasRef}
           width={700}
@@ -138,7 +116,7 @@ export default function Home() {
           }}
         />
 
-        {/* Cursors for All Users */}
+        {/* Cursors */}
         {Object.keys(cursorPositions).map((id) => (
           <div
             key={id}
